@@ -19,7 +19,7 @@ echo "Created new configuration at ${KOBO_CONF}"
 fi
 
 if [ $# -eq 0 ]; then
-  /usr/local/bin/kobocoind -rpcbind=0.0.0.0 -rpcport=3341 -rpcallowip=0.0.0.0/0 -printtoconsole=1
+  /usr/local/bin/Kobocoind -rpcbind=0.0.0.0 -rpcport=3341 -rpcallowip=0.0.0.0/0 -printtoconsole=1
 else
   exec "$@"
 fi

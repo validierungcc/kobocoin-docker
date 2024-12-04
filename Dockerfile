@@ -7,7 +7,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     git make g++ wget autoconf automake libtool \
     libevent-dev pkg-config libboost-all-dev \
-    libssl-dev ca-certificates bsdmainutils && \
+    libssl1.0-dev ca-certificates bsdmainutils && \
     addgroup --gid 1000 kobo && \
     adduser --disabled-password --gecos "" --home /kobo --ingroup kobo --uid 1000 kobo && \
     mkdir -p /kobo/.Kobocoin && \
@@ -29,25 +29,25 @@ RUN wget http://download.oracle.com/berkeley-db/db-4.8.30.NC.tar.gz && \
 
 RUN git clone https://github.com/kobocoin/Kobocoin.git /kobo/Kobocoin && \
     cd /kobo/Kobocoin && \
-    git checkout tags/v2.0.0.2 && \
+    git checkout tags/v2.13.1.0 && \
     ./autogen.sh && \
     ./configure --without-gui --with-bdb=$BDB_PREFIX && \
     make -j$(nproc)
 
 RUN mkdir -p /output && \
     cp /usr/local/lib/libdb_cxx-4.8.so /output/ && \
-    cp /kobo/Kobocoin/src/kobocoind /output/
+    cp /kobo/Kobocoin/src/Kobocoind /output/
 
 FROM ubuntu:18.04
 ENV LD_LIBRARY_PATH="/usr/local/lib"
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    libevent-dev libboost-all-dev ca-certificates && \
+    libevent-dev libboost-all-dev libssl1.0-dev ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /output/libdb_cxx-4.8.so /usr/local/lib/
-COPY --from=builder /output/kobocoind /usr/local/bin/
+COPY --from=builder /output/Kobocoind /usr/local/bin/
 
 RUN addgroup --gid 1000 kobo && \
     adduser --disabled-password --gecos "" --home /kobo --ingroup kobo --uid 1000 kobo && \
