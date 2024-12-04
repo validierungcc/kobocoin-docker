@@ -12,6 +12,7 @@ fi
 if [ ! -e "${KOBO_CONF}" ]; then
   tee -a >${KOBO_CONF} <<EOF
 server=1
+listen=1
 rpcuser=${KOBO_RPCUSER:-kobocoinrpc}
 rpcpassword=${KOBO_RPCPASSWORD}
 EOF
